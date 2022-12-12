@@ -20,11 +20,12 @@ class _TodosPageState extends State<TodosPage> {
               vertical: 40.0,
             ),
             child: Column(
-              children: const [
-                TodoHeader(),
-                CreateTodo(),
-                SizedBox(height: 20.0),
+              children: [
+                const TodoHeader(),
+                const CreateTodo(),
+                const SizedBox(height: 20.0),
                 SearchAndFilterTodo(),
+                const ShowTodos(),
               ],
             ),
           ),
@@ -33,5 +34,3 @@ class _TodosPageState extends State<TodosPage> {
     );
   }
 }
-
-
