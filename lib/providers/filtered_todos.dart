@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter_todo_provider/providers/providers.dart';
 
 import '../models/models.dart';
@@ -31,41 +32,43 @@ class FilteredTodosState extends Equatable {
   }
 }
 
-class FilteredTodos with ChangeNotifier {
-  FilteredTodosState _state = FilteredTodosState.initial();
-  FilteredTodosState get state => _state;
+class FilteredTodos {
+  final TodoFilter todoFilter;
+  final TodoSearch todoSearch;
+  final TodoList todoList;
 
-  void update(
-    TodoFilter todoFilter,
-    TodoSearch todoSearch,
-    TodoList todoList,
-  ) {
-    List<Todo> _filteredTodos;
+  FilteredTodos({
+    required this.todoFilter,
+    required this.todoSearch,
+    required this.todoList,
+  });
+
+  FilteredTodosState get state {
+    List<Todo> filteredTodos;
 
     switch (todoFilter.state.filter) {
       case Filter.active:
-        _filteredTodos = todoList.state.todos
+        filteredTodos = todoList.state.todos
             .where((Todo todo) => !todo.isCompleted)
             .toList();
         break;
       case Filter.isCompleted:
-        _filteredTodos = todoList.state.todos
+        filteredTodos = todoList.state.todos
             .where((Todo todo) => todo.isCompleted)
             .toList();
         break;
       case Filter.all:
       default:
-        _filteredTodos = todoList.state.todos;
+        filteredTodos = todoList.state.todos;
         break;
     }
 
     if (todoSearch.state.searchTerm.isNotEmpty) {
-      _filteredTodos = _filteredTodos
+      filteredTodos = filteredTodos
           .where((Todo todo) =>
               todo.desc.toLowerCase().contains(todoSearch.state.searchTerm))
           .toList();
     }
-    _state = _state.copyWith(filteredTodos: _filteredTodos);
-    notifyListeners();
+    return FilteredTodosState(filteredTodos: filteredTodos);
   }
 }

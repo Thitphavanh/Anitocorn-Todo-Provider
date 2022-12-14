@@ -31,19 +31,39 @@ class ActiveTodoCountState extends Equatable {
   }
 }
 
-class ActiveTodoCount with ChangeNotifier {
-  ActiveTodoCountState _state = ActiveTodoCountState.initial();
-  ActiveTodoCountState get state => _state;
+// class ActiveTodoCount with ChangeNotifier {
+//   // ActiveTodoCountState _state = ActiveTodoCountState.initial();
+//   late ActiveTodoCountState _state;
+//   final int initialActiveTodoCount;
+//   ActiveTodoCount({
+//     required this.initialActiveTodoCount,
+//   }) {
+//     print("initialActiveTodoCount: $initialActiveTodoCount");
+//     _state = ActiveTodoCountState(activeTodoCount: initialActiveTodoCount);
+//   }
+//   ActiveTodoCountState get state => _state;
 
-  void update(TodoList todoList) {
-    print(todoList.state);
-    final int newActiveTodoCount = todoList.state.todos
-        .where((Todo todo) => !todo.isCompleted)
-        .toList()
-        .length;
+//   void update(TodoList todoList) {
+//     final int newActiveTodoCount = todoList.state.todos
+//         .where((Todo todo) => !todo.isCompleted)
+//         .toList()
+//         .length;
 
-    _state = _state.copyWith(activeTodoCount: newActiveTodoCount);
-    print(state);
-    notifyListeners();
-  }
+//     _state = _state.copyWith(activeTodoCount: newActiveTodoCount);
+//     notifyListeners();
+//   }
+// }
+
+class ActiveTodoCount {
+  final TodoList todoList;
+
+  ActiveTodoCount({
+    required this.todoList,
+  });
+  ActiveTodoCountState get state => ActiveTodoCountState(
+        activeTodoCount: todoList.state.todos
+            .where((Todo todo) => !todo.isCompleted)
+            .toList()
+            .length,
+      );
 }
